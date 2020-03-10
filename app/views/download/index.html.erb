@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>群集社会各行业最具影响力的 “明星”的互动社群</title>
+  <link href="https://assets.bitrabbit.com/g/normalize/8.0.0/normalize.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_579225_01gt47h8tk9sh5mi.css">
+  <script>
+    window.locale = 'zh-CN';
+  </script>
+  <script>
+    window.i18n = {
+    };
+  </script>
+  <%= javascript_include_tag 'application' %>
+  <%= stylesheet_link_tag 'download' %>
+</head>
+<body>
+<header>
+  </header>
+  <div id="content">
+    <div class="left">
+      <div class="bunnyPub-icon">
+        <img src="https://assets.bitrabbit.com/static/e73bf8e5a3e061af2bbfcfbe37fd3af5.svg" style="height: 80px" alt="BunnyPub">
+      </div>
+      <div class="description">群集社会各行业最具影响力的 “明星”的互动社群</div>
+      <div class="icons">
+        <a id="appleBtn" href="">
+          <img class="appBtn" src="https://assets.bitrabbit.com/static/43e470b792d569fbe55f3f982a82cf0a.svg" alt="">
+          <div class="app pop">
+            <img id="appleQrcode" alt="">
+          </div>
+        </a>
+        <a id="androidBtn" href="">
+          <img class="andriodBtn" src="https://assets.bitrabbit.com/static/9a7af4fc291ca72d904cb3d9a4e719d9.svg" alt="">
+          <div class="andriod pop">
+            <img id="androidQrcode" alt="">
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="right">
+      <%= image_tag "download.png" %>
+    </div>
+    <div class="icons">
+      <a id="appleMobileBtn" href=""><img src="https://assets.bitrabbit.com/static/43e470b792d569fbe55f3f982a82cf0a.svg" alt=""></a>
+      <a id="androidMobileBtn" href=""><img src="https://assets.bitrabbit.com/static/9a7af4fc291ca72d904cb3d9a4e719d9.svg" alt=""></a>
+    </div>
+  </div>
+  <div id="appleTrust" class="hide">
+    <div class="content">
+      <div class="title">“未受信任的企业级开发者”解决方案</div>
+      <div class="step">1. 同意安装后，将自动在桌面上开始安装</div>
+      <div class="step trust-tc"><img src="https://assets.bitrabbit.com/static/ee1dcf99fab7823f346039f7bd6a8910.png" alt=""></div>
+      <div class="step">2. 安装完成后，首次打开app需要信任描述文件</div>
+      <div class="step trust-tc"><a href="https://assets.bitrabbit.com/app/embedded.mobileprovision"><button class="trust-btn">点击去信任</button></a></div>
+    </div>
+  </div>
+  <%= javascript_include_tag 'download' %>
+  <script>
+    if ("<%= flash[:success] %>") {
+      noty({
+        text: "<%= flash[:success] %>",
+        type: 'success'
+      }).show()
+    }
+  </script>
+</body>
+</html>

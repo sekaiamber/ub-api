@@ -1,0 +1,35 @@
+# 000000 前两位表示错误类型，比如api或者model分别是00与02
+# 第三第四位表示错误对应的位置，比如email controller或者更多
+# 第五第六表示该位置下哪种类型的错误
+zh-TW:
+  err_item:
+    app_auth:
+      user_not_found:
+        message: 用戶驗證失敗，請重新登錄
+        code: "000000"
+      wrong_params:
+        message: 請求參數錯誤
+        code: "000001"
+      app_not_found:
+        message: 請求非法
+        code: "000002"
+      timeout:
+        message: 時間錯誤，請檢查設備時間
+        code: "000003"
+    auth_user_service:
+      wrong_email:
+        message: 您輸入的郵箱地址或密碼不正確，請重新輸入。
+        code: "000101"
+      wrong_phone:
+        message: 您輸入的手機號碼或密碼不正確，請重新輸入。
+        code: "000102"
+      ban:
+        message: 您的密碼已連續輸錯10次，已限制登陸2小時
+        code: "000103"
+    captcha:
+      error:
+        message: "驗證碼錯誤"
+        code: "000200"
+    identity:
+      validate:
+        code: "000300"

@@ -1,0 +1,13 @@
+#config/redis.yml
+default:
+  host: localhost
+  port: 6379
+development:
+  db: 0
+#  namespace: appname_dev
+test:
+  db: 1
+#  namespace: appname_test
+production:
+  url: <%= <%= ENV.fetch("REDIS_URL") %> %>
+#  namespace: appname_prod

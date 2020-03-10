@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>邀请好友</title>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <%= csrf_meta_tags %>
+  <style>
+  html {
+    font-size: 100px;
+  }
+
+  body {
+    text-align: center;
+    align: center;
+    background: url(<%= image_path 'background.png' %>);
+    min-height: 500px;
+    font-size: 0.16rem;
+  }
+
+  .title {
+    height: 0.48rem;
+    font-size: 0.34rem;
+    margin-top: 0.34rem;
+    font-weight: 500;
+    color: rgba(215, 185, 126, 1);
+    line-height: 0.48rem;
+  }
+
+  .content {
+    height: 3.26rem;
+    margin-top: 0.43rem;
+    background-color: #D7B97E;
+    margin-left: 0.08rem;
+    margin-right: 0.08rem;
+    border-radius: 0.03rem;
+    -moz-border-radius: 0.15rem;
+  }
+
+  .content .content-title {
+    padding-top: 0.12rem;
+    height: 0.22rem;
+    font-size: 0.16rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+    line-height: 0.22rem;
+  }
+
+  .content .content-form {
+    font-size: 0.14rem;
+    margin-top: 0.2rem;
+  }
+
+  .content .content-form .content-form-item{
+    line-height: 0.35rem;
+  }
+
+  .content .content-form label{
+    width: 0.85rem;
+    float:left;
+    text-align:right;
+  }
+
+  .content .content-form input{
+    padding:0.01rem 0.01rem;
+    border:0.01rem solid #ccc;
+    height:0.16rem;
+    padding: 0.02rem 0.10rem 0.02rem 0.10rem;
+    border-radius: 0.03rem;
+    width: 1.45rem;
+  }
+
+  .content .content-form .verify-code input {
+    width: 0.75rem;
+  }
+
+  .content .content-form .verify-code button{
+    padding: 0;
+    background-color: #fff;
+    color: rgba(215, 185, 126, 1);
+    border: 0;
+    width: 0.6533rem;
+    height: 0.21rem;
+  }
+
+  .content .content-form .submit{
+    background-color: #fff;
+    color: rgba(215, 185, 126, 1);
+    border: 0;
+    height: 0.2rem;
+    width: 1rem;
+    margin-top: 0.2rem;
+  }
+
+  .content .description {
+    height: 0.22rem;
+    font-size: 0.16rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+    line-height: 0.22rem;
+  }
+
+  .desc {
+    height: 0.22rem;
+    font-size: 0.16rem;
+    font-weight: 500;
+    color: rgba(215, 185, 126, 1);
+    line-height: 0.22rem;
+    margin-top: 0.39rem;
+  }
+</style>
+<%= javascript_include_tag 'application' %>
+</head>
+
+<body>
+  <div class="content">
+    <div class="content-title">
+      实名认证
+    </div>
+    <div class="content-form">
+      <%= form_for @id_document, url: {action: "update"} do |f|%>
+      <div class="content-form-item">
+        <%= f.label 'name', '姓名:' %>
+        <%= f.text_field 'name', :required => true %>
+      </div>
+      <div class="content-form-item">
+        <%= f.label 'id_document_number', '身份证号:' %>
+        <%= f.text_field 'id_document_number', :required => true %>
+      </div>
+      <div class="content-form-item">
+        <%= f.label 'idcard_person_info', '身份证正面:' %>
+        <%= f.file_field 'idcard_person_info', :required => true %>
+      </div>
+      <div class="content-form-item">
+        <%= f.label 'idcard_cover', '身份证反面:' %>
+        <%= f.file_field 'idcard_cover', :required => true %>
+      </div>
+<!--       <div class="content-form-item">
+        <%= f.label 'person_holding_idcard', '手持身份证:' %>
+        <%= f.file_field 'person_holding_idcard', :required => true %>
+      </div> -->
+      <%= f.hidden_field :app_key, :value => request.headers["X-App-Key"] %>
+      <%= f.hidden_field :app_auth, :value => request.headers["X-App-Auth"] %>
+      <div class="content-form-item">
+        <%= f.submit '提交审核', :class => 'submit' %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</body>
+<script>
+    <% if flash[:error] %>
+     noty({
+        text: "<%= flash[:error] %>",
+        type: 'error'
+      }).show()
+    <% end %>
+</script>
+</html>

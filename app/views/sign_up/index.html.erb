@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>邀请好友</title>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <%= csrf_meta_tags %>
+  <style>
+  html {
+    font-size: 100px;
+  }
+
+  body {
+    text-align: center;
+    align: center;
+    background: url(<%= image_path 'background.png' %>);
+    min-height: 500px;
+    font-size: 0.16rem;
+  }
+
+  .title {
+    height: 0.48rem;
+    font-size: 0.34rem;
+    margin-top: 0.34rem;
+    font-weight: 500;
+    color: rgba(215, 185, 126, 1);
+    line-height: 0.48rem;
+  }
+
+  .content {
+    height: 3.26rem;
+    margin-top: 0.43rem;
+    background-color: #D7B97E;
+    margin-left: 0.08rem;
+    margin-right: 0.08rem;
+    border-radius: 0.03rem;
+    -moz-border-radius: 0.15rem;
+  }
+
+  .content .content-title {
+    padding-top: 0.12rem;
+    height: 0.22rem;
+    font-size: 0.16rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+    line-height: 0.22rem;
+  }
+
+  .content .content-form {
+    font-size: 0.14rem;
+    margin-top: 0.2rem;
+  }
+
+  .content .content-form .content-form-item{
+    line-height: 0.35rem;
+  }
+
+  .content .content-form label{
+    width: 0.85rem;
+    float:left;
+    text-align:right;
+  }
+
+  .content .content-form input{
+    padding:0.01rem 0.01rem;
+    border:0.01rem solid #ccc;
+    height:0.16rem;
+    padding: 0.02rem 0.10rem 0.02rem 0.10rem;
+    border-radius: 0.03rem;
+    width: 1.45rem;
+  }
+
+  .content .content-form .verify-code input {
+    width: 0.75rem;
+  }
+
+  .content .content-form .verify-code button{
+    padding: 0;
+    background-color: #fff;
+    color: rgba(215, 185, 126, 1);
+    border: 0;
+    width: 0.6533rem;
+    height: 0.21rem;
+  }
+
+  .content .content-form .submit{
+    background-color: #fff;
+    color: rgba(215, 185, 126, 1);
+    border: 0;
+    height: 0.2rem;
+    width: 1rem;
+    margin-top: 0.2rem;
+  }
+
+  .content .description {
+    height: 0.22rem;
+    font-size: 0.16rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+    line-height: 0.22rem;
+  }
+
+  .desc {
+    height: 0.22rem;
+    font-size: 0.16rem;
+    font-weight: 500;
+    color: rgba(215, 185, 126, 1);
+    line-height: 0.22rem;
+    margin-top: 0.39rem;
+  }
+</style>
+<%= javascript_include_tag 'application' %>
+</head>
+
+<body>
+  <div class="title">
+    邀请好友 分享奖励
+  </div>
+  <div class="content">
+    <div class="content-title">
+      立即注册获取100Astar
+    </div>
+    <div class="content-form">
+      <%= form_for @user, url: {action: "create"} do |f|%>
+      <div class="content-form-item">
+        <%= f.label 'phone_number', '手机号码:' %>
+        <%= f.text_field 'phone_number', :required => true %>
+      </div>
+      <div class="content-form-item verify-code">
+        <%= f.label 'verify_code', '手机验证码:' %>
+        <%= f.text_field 'verify_code', :required => true %>
+        <%= button_tag '发送短信', :class => 'send', :id => 'send', :type => 'button' %>
+      </div>
+      <div class="content-form-item">
+        <%= f.label 'nickname', '昵称:' %>
+        <%= f.text_field 'nickname', :required => true %>
+      </div>
+      <div class="content-form-item">
+        <%= f.label 'invite_code', '邀请码:' %>
+        <%= f.text_field 'invite_code', :required => true %>
+      </div>
+      <div class="content-form-item">
+        <%= f.label 'password', '密码:' %>
+        <%= f.password_field 'password', :required => true %>
+      </div>
+      <div class="content-form-item">
+        <%= f.label 'password_confirmation', '确认密码:' %>
+        <%= f.password_field 'password_confirmation', :required => true %>
+      </div>
+      <div class="content-form-item">
+        <%= f.submit '注册', :class => 'submit' %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="desc">
+    扫码下载菁英社群APP，分享社群收益
+  </div>
+</body>
+<script>
+    $('#send').on('click', function(event){
+      event.preventDefault();
+      var phone_number = '86' + $('#user_phone_number').val();
+      var btn = $('#send');
+      if (phone_number !== '86') {
+        $.ajax({
+          method: 'post',
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          url: '/sms.json',
+          data: { phone_number: phone_number },
+          success: function(res) {
+            if (res.success) {
+              noty({
+                text: '短信发送成功',
+                type: 'success'
+              }).show()
+              btn.prop('disabled', true)
+              btn.text('50')
+              var second = 50
+              var timer = null
+              timer = setInterval(function(){
+                second -= 1
+                if (second > 0) {
+                  btn.text(second)
+                } else {
+                  clearInterval(timer);
+                  btn.text('发送短信')
+                  btn.removeAttr('disabled')
+                }
+              }, 1000)
+            } else {
+              noty({
+                text: res.errors.map(e => e.message).join(','),
+                type: 'error'
+              }).show()
+            }
+          }
+        })
+      } else {
+        alert('请输入手机号码');
+      }
+    });
+
+    <% if flash[:error] %>
+     noty({
+        text: "<%= flash[:error] %>",
+        type: 'error'
+      }).show()
+    <% end %>
+</script>
+</html>

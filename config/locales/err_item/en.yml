@@ -1,0 +1,41 @@
+# 000000 前两位表示错误类型，比如api或者model分别是00与02
+# 第三第四位表示错误对应的位置，比如email controller或者更多
+# 第五第六表示该位置下哪种类型的错误
+en:
+  err_item:
+    app_auth:
+      user_not_found:
+        message: User authentication failed, please login again
+        code: "000000"
+      wrong_params:
+        message: Request parameter error
+        code: "000001"
+      app_not_found:
+        message: Illegal request
+        code: "000002"
+      timeout:
+        message: Time error, please check the equipment
+        code: "000003"
+    auth_user_service:
+      wrong_email:
+        message: Wrong customer email or password, please try again.
+        code: "000101"
+      wrong_phone:
+        message: Wrong customer phone number or password, please try again.
+        code: "000102"
+      ban:
+        message: You have entered the password incorrectly 10 times in a row, please try again after 2 hours.
+        code: "000103"
+    captcha:
+      error:
+        message: "Wrong captcha"
+        code: "000200"
+    identity:
+      validate:
+        code: "000300"
+      bad_number:
+        code: "000301"
+        message: "Please enter the correct phone number"
+      bad_code:
+        code: "000302"
+        message: "Please enter the correct verification code"

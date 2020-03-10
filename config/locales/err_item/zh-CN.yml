@@ -1,0 +1,79 @@
+# 000000 前两位表示错误类型，比如api或者model分别是00与02
+# 第三第四位表示错误对应的位置，比如email controller或者更多
+# 第五第六表示该位置下哪种类型的错误
+zh-CN:
+  sms:
+    verification_code: '验证码为：%{code}，30分钟内有效。（提示：工作人员不会索要，切勿泄露！）'
+
+  err_item:
+    app_auth:
+      user_not_found:
+        message: 用户验证失败，请重新登录
+        code: "000000"
+      wrong_params:
+        message: 请求参数错误
+        code: "000001"
+      app_not_found:
+        message: 请求非法
+        code: "000002"
+      timeout:
+        message: 时间错误，请检查设备时间
+        code: "000003"
+    auth_user_service:
+      wrong_email:
+        message: 您输入的邮箱地址或密码不正确，请重新输入。
+        code: "000101"
+      wrong_phone:
+        message: 您输入的手机号码或密码不正确，请重新输入。
+        code: "000101"
+    sms:
+      bad_verify_code:
+        message: 您输入的手机验证码不正确，请重新输入。
+        code: "000201"
+    captcha:
+      error:
+        message: "验证码错误"
+        code: "000300"
+    user:
+      validate:
+        code: "000400"
+      wrong_invite_code:
+        message: 您输入的邀请码不正确，请重新输入。
+        code: "000401"
+    transfer:
+      error:
+        message: 转账失败，请稍后重试。
+        code: "000500"
+      no_user:
+        message: 无此用户，请确认账户后重试
+        code: "000501"
+      amount_wrong:
+        message: 转账金额错误，请确认后重试
+        code: "000502"
+    order:
+      can_not_unlock:
+        message: 解锁时间未到，请稍后重试
+        code: "000600"
+    identity:
+      bad_number:
+        message: 无此用户，请确认账户后重试
+        code: "000700"
+      need_auth:
+        message: 需要实名验证后才可执行本操作
+        code: "000800"
+    account:
+      insufficient_balance:
+        message: 账号余额不足
+        code: "000900"
+    product:
+      can_not_buy:
+        message: 当前时间无法参与该活动，请在活动时间内参与。
+        code: "001000"
+    withdraw:
+      stop:
+        message: 提现已暂时关闭
+        code: "001100"
+    server:
+      shutdown:
+        message: 服务器错误
+        code: "001200"

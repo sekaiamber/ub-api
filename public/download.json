@@ -1,0 +1,4 @@
+{
+  "android": "https://www.astarapp.net/astar_1.1.0.apk",
+  "apple": "itms-services://?action=download-manifest&url=https://www.astarapp.net/astar_1.1.0.plist"
+}

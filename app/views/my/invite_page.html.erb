@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>邀请好友</title>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <style>
+  html {
+    font-size: 100px;
+  }
+
+  body {
+    text-align: center;
+    align: center;
+    background: url(<%= image_path 'background.png' %>);
+    min-height: 500px;
+    font-size: 0.16rem;
+  }
+
+  .title {
+    height: 0.48rem;
+    font-size: 0.34rem;
+    margin-top: 0.34rem;
+    font-weight: 500;
+    color: rgba(215, 185, 126, 1);
+    line-height: 0.48rem;
+  }
+
+  .content {
+    height: 3.26rem;
+    margin-top: 0.43rem;
+    background-color: #D7B97E;
+    margin-left: 0.65rem;
+    margin-right: 0.65rem;
+    border-radius: 0.15rem;
+    -moz-border-radius: 0.15rem;
+  }
+
+  .content .content-title {
+    padding-top: 0.12rem;
+    height: 0.22rem;
+    font-size: 0.16rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+    line-height: 0.22rem;
+  }
+
+  .content .qrcode {
+    width: 1.71rem;
+    height: 1.71rem;
+    background-color: rgba(255, 255, 255, 1);
+    margin-top: 0.12rem;
+
+    margin-right: auto;
+    margin-left: auto
+  }
+  .content #qrcode {
+    width: 100%;
+  }
+  .content .invite-code {
+    height: 0.70rem;
+    font-size: 0.50rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+    margin-top: 0.05rem;
+    line-height: 0.70rem;
+  }
+
+  .content .description {
+    height: 0.22rem;
+    font-size: 0.16rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+    line-height: 0.22rem;
+  }
+
+  .desc {
+    height: 0.22rem;
+    font-size: 0.16rem;
+    font-weight: 500;
+    color: rgba(215, 185, 126, 1);
+    line-height: 0.22rem;
+    margin-top: 0.39rem;
+  }
+</style>
+<%= javascript_include_tag 'qrcode' %>
+</head>
+
+<body>
+  <div class="title">
+    邀请好友 分享奖励
+  </div>
+  <div class="content">
+    <div class="content-title">
+      立即注册获取100Astar
+    </div>
+    <div class="qrcode" >
+      <img id="qrcode">
+    </div>
+    <div class="invite-code">
+      <%= current_user&.invite_code %>
+    </div>
+    <div class="description">
+      我的专属邀请码
+    </div>
+  </div>
+  <div class="desc">
+    扫码下载菁英社群APP，分享社群收益
+  </div>
+</body>
+<script>
+  // window.onload = function(){
+    QRCode.toDataURL("https://<%= request.host %>/sign_up?invite_code=<%= current_user&.invite_code %>", {margin: 1}, function (err, url) {
+      document.getElementById("qrcode").src = url
+    })
+  // }
+</script>
+</html>
