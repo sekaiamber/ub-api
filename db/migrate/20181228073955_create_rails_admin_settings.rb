@@ -22,6 +22,7 @@ class CreateRailsAdminSettings < ActiveRecord::Migration[5.0]
     add_index :rails_admin_settings, :key
     add_index :rails_admin_settings, [:ns, :key], unique: true
     Settings.can_reward_after_registe?(kind: 'boolean', default: 'true', label: "是否奖励100积分")
+    Settings.debug?(kind: 'boolean', default: 'false', label: '开发模式')
   end
 end
 

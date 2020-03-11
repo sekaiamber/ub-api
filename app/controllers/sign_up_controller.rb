@@ -13,11 +13,13 @@ class SignUpController < ApplicationController
       redirect_to action: :index, :invite_code => params[:user][:invite_code]
       return
     end
-    secret = Rails.cache.read([:verify, user_params[:phone_number]])
-    if secret.nil? || params[:user][:verify_code] != secret
-      flash[:error] = I18n.t('err_item.sms.bad_verify_code.message')
-      redirect_to action: :index, :invite_code => params[:user][:invite_code]
-      return
+    unless Settings.debug?
+      secret = Rails.cache.read([:verify, user_params[:phone_number]])
+      if secret.nil? || params[:user][:verify_code] != secret
+        flash[:error] = I18n.t('err_item.sms.bad_verify_code.message')
+        redirect_to action: :index, :invite_code => params[:user][:invite_code]
+        return
+      end
     end
     @user = inviter.children.new(user_params)
     @user.api_token = SecureRandom.hex(16)

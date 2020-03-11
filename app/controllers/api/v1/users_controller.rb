@@ -7,10 +7,12 @@ class Api::V1::UsersController < Api::V1::BaseController
       render_err_item(ErrItem.new('user', 'wrong_invite_code'))
       return
     end
-    secret = Rails.cache.read([:verify, params[:phone_number]])
-    if secret.nil? || params[:verify_code] != secret
-      render_err_item(ErrItem.new('sms', 'bad_verify_code'))
-      return
+    unless Settings.debug?
+      secret = Rails.cache.read([:verify, params[:phone_number]])
+      if secret.nil? || params[:verify_code] != secret
+        render_err_item(ErrItem.new('sms', 'bad_verify_code'))
+        return
+      end
     end
     @user = inviter.children.new(user_params)
     @user.api_token = SecureRandom.hex(16)
