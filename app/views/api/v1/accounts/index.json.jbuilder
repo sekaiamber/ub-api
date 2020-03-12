@@ -1,5 +1,5 @@
-json.data do
-  json.balance @account.balance
-  json.locked @account.locked
-  json.activity_balance @activity_balance.balance
+json.data @accounts.map do |account|
+  json.(account.currency, :code, :name, :visible, :depositable, :withdrawable)
+  json.(account, :balance, :locked, :address)
+  # json.(account.payment_address, :address)
 end

@@ -15,6 +15,8 @@
 #  done_at       :datetime
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  currency      :string(255)      default("BASE")
+#  currency_id   :integer
 #
 # Indexes
 #

@@ -2,20 +2,24 @@
 #
 # Table name: users
 #
-#  id              :integer          not null, primary key
-#  nickname        :string(255)
-#  password_digest :string(255)
-#  invite_code     :string(255)
-#  phone_number    :string(255)
-#  vip_level       :integer          default("normal")
-#  parent_id       :integer
-#  lft             :integer          not null
-#  rgt             :integer          not null
-#  depth           :integer          default(0), not null
-#  children_count  :integer          default(0), not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  api_token       :string(255)
+#  id                               :integer          not null, primary key
+#  nickname                         :string(255)
+#  password_digest                  :string(255)
+#  invite_code                      :string(255)
+#  phone_number                     :string(255)
+#  vip_level                        :integer          default("normal")
+#  parent_id                        :integer
+#  lft                              :integer          not null
+#  rgt                              :integer          not null
+#  depth                            :integer          default(0), not null
+#  children_count                   :integer          default(0), not null
+#  created_at                       :datetime         not null
+#  updated_at                       :datetime         not null
+#  api_token                        :string(255)
+#  auto_receive                     :boolean          default(FALSE)
+#  community_level                  :integer          default(0)
+#  gift_community_level             :integer          default(0)
+#  gift_community_level_need_expire :boolean          default(TRUE)
 #
 # Indexes
 #
@@ -28,6 +32,7 @@
 #
 
 class User < ApplicationRecord
+  class CurrencyNotFoundError < StandardError; end
   has_secure_password
   attr_reader :verify_code
   acts_as_nested_set :counter_cache => 'children_count'
@@ -52,13 +57,28 @@ class User < ApplicationRecord
     :super => 2
   }
 
-  def account(ac_type = 'available_balance')
-    Account.send(ac_type).find_or_create_by(:user_id => id)
+  def account(currency)
+    currency_id = case currency
+    when Currency
+      currency.id
+    when Integer
+      currency
+    else
+      lc = Currency.find_by(code: currency.to_s)
+      raise CurrencyNotFoundError, code: currency unless lc
+      lc.id
+    end
+    begin
+      accounts.find_or_create_by currency_id: currency_id
+    rescue ActiveRecord::RecordNotUnique
+      retry
+    end
+    # Account.send(ac_type).find_or_create_by(:user_id => id)
   end
 
-  def payment_address
-    PaymentAddress.find_or_create_by(:account_id => account.id)
-  end
+  # def payment_address
+  #   PaymentAddress.find_or_create_by(:account_id => account.id)
+  # end
 
   def id_document
     IdDocument.find_or_create_by(:user_id => id, :state => 'verified')

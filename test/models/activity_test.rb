@@ -10,11 +10,14 @@
 #  state         :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  receive_date  :datetime
 #
 # Indexes
 #
-#  index_activities_on_order_id  (order_id)
-#  index_activities_on_user_id   (user_id)
+#  index_activities_on_order_id                  (order_id)
+#  index_activities_on_receive_date              (receive_date)
+#  index_activities_on_user_id                   (user_id)
+#  index_activities_on_user_id_and_receive_date  (user_id,receive_date)
 #
 
 require 'test_helper'

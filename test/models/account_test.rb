@@ -11,12 +11,11 @@
 #  default_withdraw_fund_source_id :integer
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
-#  account_type                    :integer          default("available_balance")
+#  currency_id                     :integer
 #
 # Indexes
 #
-#  index_accounts_on_account_type              (account_type)
-#  index_accounts_on_user_id_and_account_type  (user_id,account_type) UNIQUE
+#  index_accounts_on_user_id_and_currency_id  (user_id,currency_id)
 #
 
 require 'test_helper'

@@ -14,8 +14,10 @@ class PaymentAddress < ApplicationRecord
   before_create :set_address
 
   def set_address
-    response = JSON.parse Typhoeus::Request.new("#{ENV['WALLET_URL']}/wallets", method: 'POST', body: {currency: 'ASTARF', tag: account.user_id}).run.body
+    response = JSON.parse Typhoeus::Request.new("#{ENV['WALLET_URL']}/wallets", method: 'POST', body: {currency: account.currency.code, tag: account.user_id}).run.body
     # self.address = Bip44::Wallet.from_mnemonic('harsh stable fabric silent student clap mass ancient cable gauge there grass tourist rookie offer', "m/44'/60'/0'/0/#{account.user_id}").ethereum_address
     self.address = response['data']
+  rescue
+    nil
   end
 end

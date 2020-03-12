@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181228084208) do
+ActiveRecord::Schema.define(version: 20200312132836) do
 
   create_table "account_versions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci" do |t|
     t.integer "user_id"
@@ -40,9 +40,8 @@ ActiveRecord::Schema.define(version: 20181228084208) do
     t.integer "default_withdraw_fund_source_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "account_type", default: 0
-    t.index ["account_type"], name: "index_accounts_on_account_type"
-    t.index ["user_id", "account_type"], name: "index_accounts_on_user_id_and_account_type", unique: true
+    t.integer "currency_id"
+    t.index ["user_id", "currency_id"], name: "index_accounts_on_user_id_and_currency_id"
   end
 
   create_table "activities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci" do |t|
@@ -53,7 +52,10 @@ ActiveRecord::Schema.define(version: 20181228084208) do
     t.integer "state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "receive_date"
     t.index ["order_id"], name: "index_activities_on_order_id"
+    t.index ["receive_date"], name: "index_activities_on_receive_date"
+    t.index ["user_id", "receive_date"], name: "index_activities_on_user_id_and_receive_date"
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
 
@@ -62,6 +64,18 @@ ActiveRecord::Schema.define(version: 20181228084208) do
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "currencies", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci" do |t|
+    t.string "name"
+    t.string "code"
+    t.string "address_pattern"
+    t.boolean "visible", default: false
+    t.boolean "depositable", default: false
+    t.boolean "withdrawable", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_currencies_on_code"
   end
 
   create_table "deposits", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci" do |t|
@@ -77,6 +91,8 @@ ActiveRecord::Schema.define(version: 20181228084208) do
     t.datetime "done_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "currency", default: "BASE"
+    t.integer "currency_id"
     t.index ["account_id"], name: "index_deposits_on_account_id"
     t.index ["fund_uid"], name: "index_deposits_on_fund_uid"
     t.index ["state"], name: "index_deposits_on_state"
@@ -121,6 +137,13 @@ ActiveRecord::Schema.define(version: 20181228084208) do
     t.integer "state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "end_at"
+    t.decimal "reward", precision: 36, scale: 18
+    t.integer "power", default: 0
+    t.decimal "price", precision: 36, scale: 18
+    t.string "currency", default: "BASE"
+    t.decimal "base_count", precision: 36, scale: 18, default: "0.0"
+    t.integer "currency_id"
   end
 
   create_table "payment_addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci" do |t|
@@ -139,6 +162,9 @@ ActiveRecord::Schema.define(version: 20181228084208) do
     t.datetime "start_at"
     t.datetime "end_at"
     t.text "allow_hours"
+    t.integer "days"
+    t.integer "vip_level", default: 0
+    t.integer "power", default: 0
   end
 
   create_table "rails_admin_settings", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci" do |t|
@@ -187,6 +213,10 @@ ActiveRecord::Schema.define(version: 20181228084208) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "api_token"
+    t.boolean "auto_receive", default: false
+    t.integer "community_level", default: 0
+    t.integer "gift_community_level", default: 0
+    t.boolean "gift_community_level_need_expire", default: true
     t.index ["invite_code"], name: "index_users_on_invite_code", unique: true
     t.index ["lft"], name: "index_users_on_lft"
     t.index ["nickname"], name: "index_users_on_nickname", unique: true
@@ -208,6 +238,8 @@ ActiveRecord::Schema.define(version: 20181228084208) do
     t.decimal "sum", precision: 36, scale: 18
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "currency", default: "BASE"
+    t.integer "currency_id"
   end
 
 end

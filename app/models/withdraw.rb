@@ -2,19 +2,21 @@
 #
 # Table name: withdraws
 #
-#  id         :integer          not null, primary key
-#  sn         :string(255)
-#  account_id :integer
-#  user_id    :integer
-#  amount     :decimal(36, 18)
-#  fee        :decimal(36, 18)
-#  fund_uid   :string(255)
-#  done_at    :datetime
-#  txid       :string(255)
-#  state      :integer
-#  sum        :decimal(36, 18)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id          :integer          not null, primary key
+#  sn          :string(255)
+#  account_id  :integer
+#  user_id     :integer
+#  amount      :decimal(36, 18)
+#  fee         :decimal(36, 18)
+#  fund_uid    :string(255)
+#  done_at     :datetime
+#  txid        :string(255)
+#  state       :integer
+#  sum         :decimal(36, 18)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  currency    :string(255)      default("BASE")
+#  currency_id :integer
 #
 
 class Withdraw < ApplicationRecord
@@ -37,6 +39,7 @@ class Withdraw < ApplicationRecord
 
   belongs_to :user
   belongs_to :account
+  belongs_to :currency
 
   before_validation :fix_precision
   before_validation :calc_fee
@@ -139,8 +142,8 @@ class Withdraw < ApplicationRecord
   private
 
   def validate_address_pattern
-    reg = /0x[a-fA-F0-9]{40}/
-    unless  fund_uid =~ reg
+    reg = currency.address_pattern
+    unless fund_uid =~ reg
       errors.add(:fund_uid, "提现地址错误")
     end
   end
@@ -181,7 +184,7 @@ class Withdraw < ApplicationRecord
     request = Typhoeus.post(
       "#{ENV['WALLET_URL']}/wallets/send",
       body: {
-        currency: 'ASTARF',
+        currency: self.currency.code,
         sn: self.sn,
         amount: self.amount,
         to: self.fund_uid

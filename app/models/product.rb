@@ -11,6 +11,9 @@
 #  start_at    :datetime
 #  end_at      :datetime
 #  allow_hours :text(65535)
+#  days        :integer
+#  vip_level   :integer          default(0)
+#  power       :integer          default(0)
 #
 
 class Product < ApplicationRecord

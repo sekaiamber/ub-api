@@ -11,12 +11,11 @@
 #  default_withdraw_fund_source_id :integer
 #  created_at                      :datetime         not null
 #  updated_at                      :datetime         not null
-#  account_type                    :integer          default("available_balance")
+#  currency_id                     :integer
 #
 # Indexes
 #
-#  index_accounts_on_account_type              (account_type)
-#  index_accounts_on_user_id_and_account_type  (user_id,account_type) UNIQUE
+#  index_accounts_on_user_id_and_currency_id  (user_id,currency_id)
 #
 
 class Account < ApplicationRecord
@@ -41,7 +40,8 @@ class Account < ApplicationRecord
   FUNS = {:unlock_funds => 1, :lock_funds => 2, :plus_funds => 3, :sub_funds => 4, :unlock_and_sub_funds => 5}
 
   belongs_to :user
-  has_one :payment_address
+  belongs_to :currency
+  # has_one :payment_address
   has_many :versions, class_name: "::AccountVersion"
   # has_many :deposits
   # has_many :withdraws
@@ -49,20 +49,24 @@ class Account < ApplicationRecord
   # Suppose to use has_one here, but I want to store
   # relationship at account side. (Daniel)
 
-  enum :account_type => {
-    :available_balance => 0,
-    :activity_balance => 1
-  }
+  # enum :account_type => {
+  #   :available_balance => 0,
+  #   :activity_balance => 1
+  # }
 
-  validates :user_id, uniqueness: {scope: [:account_type]}
+  # validates :user_id, uniqueness: {scope: [:account_type]}
   validates_numericality_of :balance, :locked, greater_than_or_equal_to: ZERO
 
   # def payment_address
   #   payment_addresses.last || payment_addresses.create(currency: self.currency)
   # end
 
+  def payment_address
+    PaymentAddress.find_or_create_by(:account => self)
+  end
+
   def address
-    payment_address.try :address
+    (payment_address.try :address ) || (payment_address.set_address)
   end
 
   def self.after(*names)

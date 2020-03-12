@@ -1,7 +1,6 @@
 json.data do
   json.(@user, :id, :nickname, :phone_number, :invite_code)
   json.level @user.vip_level_before_type_cast
-  json.payment_address @user.payment_address.address
   json.id_document do
     json.(@user.id_document, :name, :id_document_number, :state)
   end
